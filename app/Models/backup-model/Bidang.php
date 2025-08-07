@@ -6,15 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Bidang extends Model
 {
+    protected $table = 'bidang';
     protected $fillable = ['nama_bidang'];
 
-    public function subBidangs()
+    public function subBidang()
     {
         return $this->hasMany(SubBidang::class);
-    }
-
-    public function jenisKegiatans()
-    {
-        return $this->hasManyThrough(JenisKegiatan::class, SubBidang::class, 'bidang_id', 'sub_bidang_id');
     }
 }

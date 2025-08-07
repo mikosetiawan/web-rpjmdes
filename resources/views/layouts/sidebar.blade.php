@@ -37,6 +37,28 @@
                    </a>
                </li>
                <li>
+                   <a href="{{ route('rpjmdes.index') }}"
+                       class="sidebar-item {{ request()->routeIs('rpjmdes.*') ? 'active-sidebar' : '' }} flex items-center space-x-3 px-4 py-3 text-white hover:text-yellow-300">
+                       <i class="fas fa-file"></i>
+                       <span>RPJM Form</span>
+                   </a>
+               </li>
+               <li>
+                   <a href="{{ route('tim-penyusun.index') }}"
+                       class="sidebar-item {{ request()->routeIs('tim-penyusun.*') ? 'active-sidebar' : '' }} flex items-center space-x-3 px-4 py-3 text-white hover:text-yellow-300">
+                       <i class="fas fa-users"></i>
+                       <span>Tim Penuyusun</span>
+                   </a>
+               </li>
+               <li>
+                   <a href="{{ route('potensi-inventarisir.index') }}"
+                       class="sidebar-item {{ request()->routeIs('potensi-inventarisir.*') ? 'active-sidebar' : '' }} flex items-center space-x-3 px-4 py-3 text-white hover:text-yellow-300">
+                       <i class="fas fa-book"></i>
+                       <span>Potensi Inventarisir</span>
+                   </a>
+               </li>
+               
+               {{-- <li>
                    <a href="{{ route('jenis-kegiatan.index') }}"
                        class="sidebar-item {{ request()->routeIs('jenis-kegiatan.*') ? 'active-sidebar' : '' }} flex items-center space-x-3 px-4 py-3 text-white hover:text-yellow-300">
                        <i class="fas fa-list"></i>
@@ -63,7 +85,7 @@
                        <i class="fas fa-chart-bar"></i>
                        <span>Laporan</span>
                    </a>
-               </li>
+               </li> --}}
                <li>
                    <a href="{{ route('profile.edit') }}"
                        class="sidebar-item {{ request()->routeIs('profile.*') ? 'active-sidebar' : '' }} flex items-center space-x-3 px-4 py-3 text-white hover:text-yellow-300">

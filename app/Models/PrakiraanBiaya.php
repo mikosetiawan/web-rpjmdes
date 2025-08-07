@@ -4,16 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class WaktuPelaksanaan extends Model
+class PrakiraanBiaya extends Model
 {
     protected $fillable = [
         'jenis_kegiatan_id',
-        'tahun_2022',
-        'tahun_2023',
-        'tahun_2024',
-        'tahun_2025',
-        'tahun_2026',
-        'tahun_2027'
+        'jumlah',
+        'sumber_dana',
+        'swakelola',
+        'antara_pihak',
+        'kerjasama_desa',
+        'pola_pelaksanaan'
     ];
 
     public function jenisKegiatan()

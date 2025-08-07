@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SubBidang extends Model
 {
+    protected $table = 'sub_bidang';
     protected $fillable = ['bidang_id', 'nama_sub_bidang'];
 
     public function bidang()
@@ -13,7 +14,7 @@ class SubBidang extends Model
         return $this->belongsTo(Bidang::class);
     }
 
-    public function jenisKegiatans()
+    public function jenisKegiatan()
     {
         return $this->hasMany(JenisKegiatan::class);
     }
