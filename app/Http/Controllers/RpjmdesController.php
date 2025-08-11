@@ -2,118 +2,122 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\JenisKegiatan;
-use App\Models\Bidang;
-use App\Models\SubBidang;
-use App\Http\Requests\StoreRpjmdesRequest;
-use App\Models\LokasiDusun;
-use App\Models\PenerimaManfaat;
-use App\Models\PrakiraanBiaya;
-use App\Models\TargetCapaianTahun;
-use App\Models\WaktuPelaksanaan;
+use App\Models\Rpjmdes;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class RpjmdesController extends Controller
 {
     public function index()
     {
-        $rpjmdes = JenisKegiatan::with([
-            'subBidang.bidang', 
-            'targetCapaianTahuns', 
-            'lokasiDusuns', 
-            'penerimaManfaats', 
-            'waktuPelaksanaans', 
-            'prakirakanBiayas'
-        ])->get();
+        $rpjmdes = Rpjmdes::all();
         return view('rpjmdes.index', compact('rpjmdes'));
     }
 
     public function create()
     {
-        $bidangs = Bidang::all();
-        $subBidangs = SubBidang::all();
-        return view('rpjmdes.create', compact('bidangs', 'subBidangs'));
+        return view('rpjmdes.create');
     }
 
-    public function store(StoreRpjmdesRequest $request)
+    public function store(Request $request)
     {
-        $jenisKegiatan = JenisKegiatan::create([
-            'sub_bidang_id' => $request->sub_bidang_id,
-            'nama_program_kegiatan' => $request->nama_program_kegiatan,
-            'sdgs_ke' => $request->sdgs_ke,
+        $validated = $request->validate([
+            'nama_bidang' => 'required|string|max:255',
+            'nama_sub_bidang' => 'required|array',
+            'nama_sub_bidang.*' => 'required|string|max:255',
+            'nama_program_kegiatan' => 'required|string|max:255',
+            'sdgs_ke' => 'nullable|string|max:255',
+            'data_existing_tahun_ke' => 'nullable|string|max:255',
+            'tahun_ke_0' => 'nullable|integer',
+            'tahun_ke_1' => 'nullable|integer',
+            'tahun_ke_2' => 'nullable|integer',
+            'tahun_ke_3' => 'nullable|integer',
+            'tahun_ke_4' => 'nullable|integer',
+            'tahun_ke_5' => 'nullable|integer',
+            'tahun_ke_6' => 'nullable|integer',
+            'lokasi' => 'nullable|string|max:255',
+            'dusun' => 'nullable|string|max:255',
+            'satuan' => 'nullable|string|max:255',
+            'penerima_manfaat' => 'nullable|string|max:255',
+            'tahun_2022' => 'nullable|integer|min:1900|max:2100',
+            'tahun_2023' => 'nullable|integer|min:1900|max:2100',
+            'tahun_2024' => 'nullable|integer|min:1900|max:2100',
+            'tahun_2025' => 'nullable|integer|min:1900|max:2100',
+            'tahun_2026' => 'nullable|integer|min:1900|max:2100',
+            'tahun_2027' => 'nullable|integer|min:1900|max:2100',
+            'jumlah' => 'nullable|numeric|min:0',
+            'sumber_dana' => 'nullable|string|max:255',
+            'swakelola' => 'nullable|string|max:255',
+            'kerjasama_desa' => 'nullable|string|max:255',
+            'kerjasama_pihak_ketiga' => 'nullable|string|max:255',
         ]);
 
-        TargetCapaianTahun::create([
-            'jenis_kegiatan_id' => $jenisKegiatan->id,
-            'tahun_ke_0' => $request->target_capaian_tahun['tahun_ke_0'],
-            'tahun_ke_1' => $request->target_capaian_tahun['tahun_ke_1'],
-            'tahun_ke_2' => $request->target_capaian_tahun['tahun_ke_2'],
-            'tahun_ke_3' => $request->target_capaian_tahun['tahun_ke_3'],
-            'tahun_ke_4' => $request->target_capaian_tahun['tahun_ke_4'],
-            'tahun_ke_5' => $request->target_capaian_tahun['tahun_ke_5'],
-            'tahun_ke_6' => $request->target_capaian_tahun['tahun_ke_6'],
-        ]);
-
-        LokasiDusun::create([
-            'jenis_kegiatan_id' => $jenisKegiatan->id,
-            'lokasi' => $request->lokasi_dusun['lokasi'],
-            'dusun' => $request->lokasi_dusun['dusun'],
-            'satuan' => $request->lokasi_dusun['satuan'],
-        ]);
-
-        PenerimaManfaat::create([
-            'jenis_kegiatan_id' => $jenisKegiatan->id,
-            'penerima_manfaat' => $request->penerima_manfaat,
-        ]);
-
-        WaktuPelaksanaan::create([
-            'jenis_kegiatan_id' => $jenisKegiatan->id,
-            'tahun_2022' => $request->waktu_pelaksanaan['tahun_2022'],
-            'tahun_2023' => $request->waktu_pelaksanaan['tahun_2023'],
-            'tahun_2024' => $request->waktu_pelaksanaan['tahun_2024'],
-            'tahun_2025' => $request->waktu_pelaksanaan['tahun_2025'],
-            'tahun_2026' => $request->waktu_pelaksanaan['tahun_2026'],
-            'tahun_2027' => $request->waktu_pelaksanaan['tahun_2027'],
-        ]);
-
-        PrakiraanBiaya::create([
-            'jenis_kegiatan_id' => $jenisKegiatan->id,
-            'jumlah' => $request->prakiraan_biaya['jumlah'],
-            'sumber_dana' => $request->prakiraan_biaya['sumber_dana'],
-            'swakelola' => $request->prakiraan_biaya['swakelola'],
-            'antara_pihak' => $request->prakiraan_biaya['antara_pihak'],
-            'kerjasama_desa' => $request->prakiraan_biaya['kerjasama_desa'],
-            'pola_pelaksanaan' => $request->prakiraan_biaya['pola_pelaksanaan'],
-        ]);
-
-        return redirect()->route('rpjmdes.index')->with('success', 'Data RPJMDES berhasil ditambahkan.');
+        try {
+            $validated['nama_sub_bidang'] = array_map('trim', $validated['nama_sub_bidang']);
+            Rpjmdes::create($validated);
+            return redirect()->route('rpjmdes.index')->with('success', 'Data RPJMDES berhasil ditambahkan.');
+        } catch (\Exception $e) {
+            Log::error('Error storing RPJMDES: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal menambahkan data RPJMDES.')->withInput();
+        }
     }
 
-    public function edit($id)
+    public function edit(Rpjmdes $rpjmdes)
     {
-        $rpjmdes = JenisKegiatan::with([
-            'subBidang.bidang', 
-            'targetCapaianTahuns', 
-            'lokasiDusuns', 
-            'penerimaManfaats', 
-            'waktuPelaksanaans', 
-            'prakirakanBiayas'
-        ])->findOrFail($id);
-        $bidangs = Bidang::all();
-        $subBidangs = SubBidang::all();
-        return view('rpjmdes.edit', compact('rpjmdes', 'bidangs', 'subBidangs'));
+        return view('rpjmdes.edit', compact('rpjmdes'));
     }
 
-    public function destroy($id)
+    public function update(Request $request, Rpjmdes $rpjmdes)
     {
-        $rpjmdes = JenisKegiatan::findOrFail($id);
-        $rpjmdes->targetCapaianTahuns()->delete();
-        $rpjmdes->lokasiDusuns()->delete();
-        $rpjmdes->penerimaManfaats()->delete();
-        $rpjmdes->waktuPelaksanaans()->delete();
-        $rpjmdes->prakirakanBiayas()->delete();
-        $rpjmdes->delete();
+        $validated = $request->validate([
+            'nama_bidang' => 'required|string|max:255',
+            'nama_sub_bidang' => 'required|array',
+            'nama_sub_bidang.*' => 'required|string|max:255',
+            'nama_program_kegiatan' => 'required|string|max:255',
+            'sdgs_ke' => 'nullable|string|max:255',
+            'data_existing_tahun_ke' => 'nullable|string|max:255',
+            'tahun_ke_0' => 'nullable|integer',
+            'tahun_ke_1' => 'nullable|integer',
+            'tahun_ke_2' => 'nullable|integer',
+            'tahun_ke_3' => 'nullable|integer',
+            'tahun_ke_4' => 'nullable|integer',
+            'tahun_ke_5' => 'nullable|integer',
+            'tahun_ke_6' => 'nullable|integer',
+            'lokasi' => 'nullable|string|max:255',
+            'dusun' => 'nullable|string|max:255',
+            'satuan' => 'nullable|string|max:255',
+            'penerima_manfaat' => 'nullable|string|max:255',
+            'tahun_2022' => 'nullable|integer|min:1900|max:2100',
+            'tahun_2023' => 'nullable|integer|min:1900|max:2100',
+            'tahun_2024' => 'nullable|integer|min:1900|max:2100',
+            'tahun_2025' => 'nullable|integer|min:1900|max:2100',
+            'tahun_2026' => 'nullable|integer|min:1900|max:2100',
+            'tahun_2027' => 'nullable|integer|min:1900|max:2100',
+            'jumlah' => 'nullable|numeric|min:0',
+            'sumber_dana' => 'nullable|string|max:255',
+            'swakelola' => 'nullable|string|max:255',
+            'kerjasama_desa' => 'nullable|string|max:255',
+            'kerjasama_pihak_ketiga' => 'nullable|string|max:255',
+        ]);
 
-        return redirect()->route('rpjmdes.index')->with('success', 'Data RPJMDES berhasil dihapus.');
+        try {
+            $validated['nama_sub_bidang'] = array_map('trim', $validated['nama_sub_bidang']);
+            $rpjmdes->update($validated);
+            return redirect()->route('rpjmdes.index')->with('success', 'Data RPJMDES berhasil diperbarui.');
+        } catch (\Exception $e) {
+            Log::error('Error updating RPJMDES: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal memperbarui data RPJMDES.')->withInput();
+        }
+    }
+
+    public function destroy(Rpjmdes $rpjmdes)
+    {
+        try {
+            $rpjmdes->delete();
+            return redirect()->route('rpjmdes.index')->with('success', 'Data RPJMDES berhasil dihapus.');
+        } catch (\Exception $e) {
+            Log::error('Error deleting RPJMDES: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal menghapus data RPJMDES.');
+        }
     }
 }

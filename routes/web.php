@@ -27,11 +27,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // RPJMDES
-    Route::get('/rpjmdes', [RpjmdesController::class, 'index'])->name('rpjmdes.index');
-    Route::get('/rpjmdes/create', [RpjmdesController::class, 'create'])->name('rpjmdes.create');
-    Route::post('/rpjmdes/store', [RpjmdesController::class, 'store'])->name('rpjmdes.store');
-    Route::get('/rpjmdes/{id}/edit', [RpjmdesController::class, 'edit'])->name('rpjmdes.edit');
-    Route::delete('/rpjmdes/{id}', [RpjmdesController::class, 'destroy'])->name('rpjmdes.destroy');
+    // Route::resource('rpjmdes', RpjmdesController::class);
+    Route::get('rpjmdes', [RpjmdesController::class, 'index'])->name('rpjmdes.index');
+    Route::get('rpjmdes/create', [RpjmdesController::class, 'create'])->name('rpjmdes.create');
+    Route::post('rpjmdes', [RpjmdesController::class, 'store'])->name('rpjmdes.store');
+    Route::get('rpjmdes/{rpjmdes}/edit', [RpjmdesController::class, 'edit'])->name('rpjmdes.edit');
+    Route::put('rpjmdes/{rpjmdes}', [RpjmdesController::class, 'update'])->name('rpjmdes.update');
+    Route::delete('rpjmdes/{rpjmdes}', [RpjmdesController::class, 'destroy'])->name('rpjmdes.destroy');
+
 
     // Susunan Tim Penyusun RPJM Desa
     Route::get('/tim-penyusun', [TimPenyusunController::class, 'index'])->name('tim-penyusun.index');
@@ -49,17 +52,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/potensi-inventarisir/{id}', [PotensiInventarisirController::class, 'update'])->name('potensi-inventarisir.update');
     Route::delete('/potensi-inventarisir/{id}', [PotensiInventarisirController::class, 'destroy'])->name('potensi-inventarisir.destroy');
 
-    Route::resource('bidang', BidangController::class);
-    Route::resource('sub-bidang', SubBidangController::class);
 
-    // Route::resource('jenis-kegiatan', JenisKegiatanController::class);
-    // Route::resource('waktu-pelaksanaan', WaktuPelaksanaanController::class);
-    // Route::resource('pola-pelaksanaan', PolaPelaksanaanController::class);
-    // Route::resource('laporan', LaporanController::class);
-
-    // Route::get('/laporan/export/excel', [LaporanController::class, 'exportExcel'])->name('laporan.export.excel');
-    // Route::get('/laporan/export/pdf', [LaporanController::class, 'exportPdf'])->name('laporan.export.pdf');
-    // Route::get('/laporan/laporan/print', [LaporanController::class, 'print'])->name('laporan.print');
 });
 
 require __DIR__ . '/auth.php';

@@ -6,7 +6,7 @@
                 <hr>
             @endif
 
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Daftar Inventarisir Potensi Desa Pejaten</h2>
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Daftar Inventarisir Potensi Kantor Desa wanakarta</h2>
             <hr><br>
             <div class="mb-4">
                 <a href="{{ route('potensi-inventarisir.create') }}"
@@ -20,6 +20,7 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Potensi</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lokasi</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Keterangan</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Masalah</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                         </tr>
                     </thead>
@@ -30,6 +31,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $potensi->potensi }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $potensi->lokasi }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $potensi->keterangan }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ $potensi->masalah }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <a href="{{ route('potensi-inventarisir.edit', $potensi->id) }}"
                                        class="text-indigo-600 hover:text-indigo-900 mr-2">Edit</a>

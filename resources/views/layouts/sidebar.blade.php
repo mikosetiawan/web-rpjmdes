@@ -22,7 +22,7 @@
                        <span>Dashboard</span>
                    </a>
                </li>
-               <li>
+               {{-- <li>
                    <a href="{{ route('bidang.index') }}"
                        class="sidebar-item {{ request()->routeIs('bidang.*') ? 'active-sidebar' : '' }} flex items-center space-x-3 px-4 py-3 text-white hover:text-yellow-300">
                        <i class="fas fa-folder"></i>
@@ -35,7 +35,7 @@
                        <i class="fas fa-folder-open"></i>
                        <span>Sub Bidang</span>
                    </a>
-               </li>
+               </li> --}}
                <li>
                    <a href="{{ route('rpjmdes.index') }}"
                        class="sidebar-item {{ request()->routeIs('rpjmdes.*') ? 'active-sidebar' : '' }} flex items-center space-x-3 px-4 py-3 text-white hover:text-yellow-300">

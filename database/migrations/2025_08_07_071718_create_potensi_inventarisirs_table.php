@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('potensi');
             $table->string('lokasi');
             $table->string('keterangan');
+            $table->string('masalah');
             $table->timestamps();
         });
     }

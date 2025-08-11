@@ -18,6 +18,10 @@
                         <label for="keterangan" class="block text-sm font-medium text-gray-700">Keterangan</label>
                         <input type="text" id="keterangan" name="keterangan" value="{{ $potensiInventarisir->keterangan }}" class="mt-1 block p-2 w-full border-gray-300 rounded-md shadow-sm" required>
                     </div>
+                    <div>
+                        <label for="masalah" class="block text-sm font-medium text-gray-700">Masalah</label>
+                        <input type="text" id="masalah" name="masalah" value="{{ $potensiInventarisir->masalah }}" class="mt-1 block p-2 w-full border-gray-300 rounded-md shadow-sm" required>
+                    </div>
                 </div>
                 <div class="mt-6">
                     <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Update</button>

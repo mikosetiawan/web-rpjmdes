@@ -25,6 +25,7 @@ class PotensiInventarisirController extends Controller
             'potensi' => 'required|string|max:255',
             'lokasi' => 'required|string|max:255',
             'keterangan' => 'required|string|max:255',
+            'masalah' => 'required|string|max:255',
         ]);
 
         PotensiInventarisir::create($validated);
@@ -46,6 +47,7 @@ class PotensiInventarisirController extends Controller
             'potensi' => 'required|string|max:255',
             'lokasi' => 'required|string|max:255',
             'keterangan' => 'required|string|max:255',
+            'masalah' => 'required|string|max:255',
         ]);
 
         $potensiInventarisir->update($validated);

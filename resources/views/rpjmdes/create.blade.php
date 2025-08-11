@@ -2,108 +2,206 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-6">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
             <h2 class="text-xl font-semibold text-gray-800 mb-4">Tambah Data RPJMDES</h2>
+            <hr><br>
+
             <form action="{{ route('rpjmdes.store') }}" method="POST">
                 @csrf
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Bidang -->
                     <div>
-                        <label for="bidang_id" class="block text-sm font-medium text-gray-700">Bidang</label>
-                        <select id="bidang_id" name="bidang_id" class="mt-1 block p-2 w-full border-gray-300 rounded-md shadow-sm" required>
-                            <option value="">Pilih Bidang</option>
-                            @foreach ($bidangs as $bidang)
-                                <option value="{{ $bidang->id }}">{{ $bidang->nama_bidang }}</option>
-                            @endforeach
-                        </select>
+                        <label for="nama_bidang" class="block text-sm font-medium text-gray-700">Nama Bidang</label>
+                        <input type="text" name="nama_bidang" id="nama_bidang" value="{{ old('nama_bidang') }}"
+                               class="mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                               required>
+                        @error('nama_bidang')
+                            <span class="text-red-600 text-sm">{{ $message }}</span>
+                        @enderror
                     </div>
+
+                    <!-- Sub Bidang (Dynamic Inputs) -->
                     <div>
-                        <label for="sub_bidang_id" class="block text-sm font-medium text-gray-700">Sub Bidang</label>
-                        <select id="sub_bidang_id" name="sub_bidang_id" class="mt-1 block p-2 w-full border-gray-300 rounded-md shadow-sm" required>
-                            <option value="">Pilih Sub Bidang</option>
-                            @foreach ($subBidangs as $subBidang)
-                                <option value="{{ $subBidang->id }}">{{ $subBidang->nama_sub_bidang }}</option>
-                            @endforeach
-                        </select>
+                        <label class="block text-sm font-medium text-gray-700">Sub Bidang</label>
+                        <div id="sub-bidang-container">
+                            <div class="sub-bidang-group flex items-center mb-2">
+                                <input type="text" name="nama_sub_bidang[]" class="mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                                       required>
+                                <button type="button" class="remove-sub-bidang ml-2 text-red-600 hover:text-red-800">Hapus</button>
+                            </div>
+                        </div>
+                        <button type="button" id="add-sub-bidang" class="mt-2 text-blue-600 hover:text-blue-800">+ Tambah Sub Bidang</button>
+                        @error('nama_sub_bidang.*')
+                            <span class="text-red-600 text-sm">{{ $message }}</span>
+                        @enderror
                     </div>
+
+                    <!-- Jenis Kegiatan -->
                     <div>
                         <label for="nama_program_kegiatan" class="block text-sm font-medium text-gray-700">Nama Program/Kegiatan</label>
-                        <input type="text" id="nama_program_kegiatan" name="nama_program_kegiatan" class="mt-1 block p-2 w-full border-gray-300 rounded-md shadow-sm" required>
+                        <input type="text" name="nama_program_kegiatan" id="nama_program_kegiatan" value="{{ old('nama_program_kegiatan') }}"
+                               class="mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                               required>
+                        @error('nama_program_kegiatan')
+                            <span class="text-red-600 text-sm">{{ $message }}</span>
+                        @enderror
                     </div>
-                    <div>
-                        <label for="sdgs_ke" class="block text-sm font-medium text-gray-700">SDGs Ke</label>
-                        <input type="text" id="sdgs_ke" name="sdgs_ke" class="mt-1 block p-2 w-full border-gray-300 rounded-md shadow-sm">
-                    </div>
-                </div>
 
-                <!-- Target Capaian -->
-                <div class="mt-6">
-                    <label class="block text-sm font-medium text-gray-700">Target Capaian Tahun</label>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4 mt-2">
-                        @for ($i = 0; $i <= 6; $i++)
-                            <input type="number" name="target_capaian_tahun[tahun_ke_{{ $i }}]" class="border-gray-300 rounded-md shadow-sm" placeholder="Tahun {{ $i }}">
-                        @endfor
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <!-- SDGs -->
                     <div>
-                        <label for="lokasi" class="block text-sm font-medium text-gray-700">Lokasi</label>
-                        <input type="text" id="lokasi" name="lokasi_dusun[lokasi]" class="mt-1 block p-2 w-full border-gray-300 rounded-md shadow-sm" required>
+                        <label for="sdgs_ke" class="block text-sm font-medium text-gray-700">Mendukung SDGs Ke-</label>
+                        <input type="text" name="sdgs_ke" id="sdgs_ke" value="{{ old('sdgs_ke') }}"
+                               class="mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                        @error('sdgs_ke')
+                            <span class="text-red-600 text-sm">{{ $message }}</span>
+                        @enderror
                     </div>
+
+                    <!-- Data Existing -->
+                    <div>
+                        <label for="data_existing_tahun_ke" class="block text-sm font-medium text-gray-700">Data Existing Tahun Ke-0</label>
+                        <input type="text" name="data_existing_tahun_ke" id="data_existing_tahun_ke" value="{{ old('data_existing_tahun_ke') }}"
+                               class="mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                        @error('data_existing_tahun_ke')
+                            <span class="text-red-600 text-sm">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <!-- Target Capaian Tahun -->
+                    @for ($i = 0; $i <= 6; $i++)
+                        <div>
+                            <label for="tahun_ke_{{ $i }}" class="block text-sm font-medium text-gray-700">Target Capaian Tahun Ke-{{ $i }}</label>
+                            <input type="number" name="tahun_ke_{{ $i }}" id="tahun_ke_{{ $i }}" value="{{ old('tahun_ke_' . $i) }}"
+                                   class="mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                            @error('tahun_ke_' . $i)
+                                <span class="text-red-600 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    @endfor
+
+                    <!-- Lokasi & Dusun -->
+                    <div>
+                        <label for="lokasi" class="block text-sm font-medium text-gray-700">Lokasi (RT/RW)</label>
+                        <input type="text" name="lokasi" id="lokasi" value="{{ old('lokasi') }}"
+                               class="mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                        @error('lokasi')
+                            <span class="text-red-600 text-sm">{{ $message }}</span>
+                        @enderror
+                    </div>
+
                     <div>
                         <label for="dusun" class="block text-sm font-medium text-gray-700">Dusun</label>
-                        <input type="text" id="dusun" name="lokasi_dusun[dusun]" class="mt-1 block p-2 w-full border-gray-300 rounded-md shadow-sm" required>
+                        <input type="text" name="dusun" id="dusun" value="{{ old('dusun') }}"
+                               class="mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                        @error('dusun')
+                            <span class="text-red-600 text-sm">{{ $message }}</span>
+                        @enderror
                     </div>
+
+                    <!-- Satuan -->
                     <div>
                         <label for="satuan" class="block text-sm font-medium text-gray-700">Satuan</label>
-                        <input type="text" id="satuan" name="lokasi_dusun[satuan]" class="mt-1 block p-2 w-full border-gray-300 rounded-md shadow-sm" required>
+                        <input type="text" name="satuan" id="satuan" value="{{ old('satuan') }}"
+                               class="mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                        @error('satuan')
+                            <span class="text-red-600 text-sm">{{ $message }}</span>
+                        @enderror
                     </div>
+
+                    <!-- Penerima Manfaat -->
                     <div>
                         <label for="penerima_manfaat" class="block text-sm font-medium text-gray-700">Penerima Manfaat</label>
-                        <input type="text" id="penerima_manfaat" name="penerima_manfaat" class="mt-1 block p-2 w-full border-gray-300 rounded-md shadow-sm" required>
+                        <input type="text" name="penerima_manfaat" id="penerima_manfaat" value="{{ old('penerima_manfaat') }}"
+                               class="mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                        @error('penerima_manfaat')
+                            <span class="text-red-600 text-sm">{{ $message }}</span>
+                        @enderror
                     </div>
-                </div>
 
-                <!-- Waktu Pelaksanaan -->
-                <div class="mt-6">
-                    <label class="block text-sm font-medium text-gray-700">Waktu Pelaksanaan</label>
-                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mt-2">
-                        @foreach ([2022, 2023, 2024, 2025, 2026, 2027] as $tahun)
-                            <input type="number" name="waktu_pelaksanaan[tahun_{{ $tahun }}]" class="border-gray-300 rounded-md shadow-sm" placeholder="{{ $tahun }}">
-                        @endforeach
-                    </div>
-                </div>
+                    <!-- Waktu Pelaksanaan -->
+                    @foreach ([2022, 2023, 2024, 2025, 2026, 2027] as $year)
+                        <div>
+                            <label for="tahun_{{ $year }}" class="block text-sm font-medium text-gray-700">Tahun {{ $year }}</label>
+                            <input type="number" name="tahun_{{ $year }}" id="tahun_{{ $year }}" value="{{ old('tahun_' . $year) }}"
+                                   class="mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                                   min="1900" max="2100">
+                            @error('tahun_' . $year)
+                                <span class="text-red-600 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    @endforeach
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <!-- Prakiraan Biaya -->
                     <div>
-                        <label for="jumlah" class="block text-sm font-medium text-gray-700">Jumlah (Rp)</label>
-                        <input type="number" id="jumlah" name="prakiraan_biaya[jumlah]" step="0.01" class="mt-1 block p-2 w-full border-gray-300 rounded-md shadow-sm" required>
+                        <label for="jumlah" class="block text-sm font-medium text-gray-700">Jumlah Biaya (Rp)</label>
+                        <input type="number" name="jumlah" id="jumlah" value="{{ old('jumlah') }}"
+                               class="mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                               step="0.01" min="0">
+                        @error('jumlah')
+                            <span class="text-red-600 text-sm">{{ $message }}</span>
+                        @enderror
                     </div>
+
                     <div>
-                        <label for="sumber_dana" class="block text-sm font-medium text-gray-700">Sumber Dana</label>
-                        <input type="text" id="sumber_dana" name="prakiraan_biaya[sumber_dana]" class="mt-1 block p-2 w-full border-gray-300 rounded-md shadow-sm" required>
+                        <label for="sumber_dana" class="block text-sm font-medium text-gray-700">Sumber</label>
+                        <input type="text" name="sumber_dana" id="sumber_dana" value="{{ old('sumber_dana') }}"
+                               class="mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                        @error('sumber_dana')
+                            <span class="text-red-600 text-sm">{{ $message }}</span>
+                        @enderror
                     </div>
+
+                    <!-- Pola Pelaksanaan -->
                     <div>
                         <label for="swakelola" class="block text-sm font-medium text-gray-700">Swakelola</label>
-                        <input type="text" id="swakelola" name="prakiraan_biaya[swakelola]" class="mt-1 block p-2 w-full border-gray-300 rounded-md shadow-sm" required>
+                        <input type="text" name="swakelola" id="swakelola" value="{{ old('swakelola') }}"
+                               class="mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                        @error('swakelola')
+                            <span class="text-red-600 text-sm">{{ $message }}</span>
+                        @enderror
                     </div>
+
                     <div>
-                        <label for="antara_pihak" class="block text-sm font-medium text-gray-700">Antara Pihak</label>
-                        <input type="text" id="antara_pihak" name="prakiraan_biaya[antara_pihak]" class="mt-1 block p-2 w-full border-gray-300 rounded-md shadow-sm" required>
+                        <label for="kerjasama_desa" class="block text-sm font-medium text-gray-700">Kerjasama Antar Desa</label>
+                        <input type="text" name="kerjasama_desa" id="kerjasama_desa" value="{{ old('kerjasama_desa') }}"
+                               class="mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                        @error('kerjasama_desa')
+                            <span class="text-red-600 text-sm">{{ $message }}</span>
+                        @enderror
                     </div>
+
                     <div>
-                        <label for="kerjasama_desa" class="block text-sm font-medium text-gray-700">Kerjasama Desa</label>
-                        <input type="text" id="kerjasama_desa" name="prakiraan_biaya[kerjasama_desa]" class="mt-1 block p-2 w-full border-gray-300 rounded-md shadow-sm" required>
-                    </div>
-                    <div>
-                        <label for="pola_pelaksanaan" class="block text-sm font-medium text-gray-700">Pola Pelaksanaan</label>
-                        <input type="text" id="pola_pelaksanaan" name="prakiraan_biaya[pola_pelaksanaan]" class="mt-1 block p-2 w-full border-gray-300 rounded-md shadow-sm" required>
+                        <label for="kerjasama_pihak_ketiga" class="block text-sm font-medium text-gray-700">Kerjasama Pihak Ketiga</label>
+                        <input type="text" name="kerjasama_pihak_ketiga" id="kerjasama_pihak_ketiga" value="{{ old('kerjasama_pihak_ketiga') }}"
+                               class="mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                        @error('kerjasama_pihak_ketiga')
+                            <span class="text-red-600 text-sm">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
 
                 <div class="mt-6">
                     <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Simpan</button>
-                    <a href="{{ route('rpjmdes.index') }}" class="ml-2 px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400">Batal</a>
+                    <a href="{{ route('rpjmdes.index') }}" class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700">Batal</a>
                 </div>
             </form>
         </div>
     </div>
+
+    <script>
+        document.getElementById('add-sub-bidang').addEventListener('click', function() {
+            const container = document.getElementById('sub-bidang-container');
+            const newGroup = document.createElement('div');
+            newGroup.className = 'sub-bidang-group flex items-center mb-2';
+            newGroup.innerHTML = `
+                <input type="text" name="nama_sub_bidang[]" class="mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" required>
+                <button type="button" class="remove-sub-bidang ml-2 text-red-600 hover:text-red-800">Hapus</button>
+            `;
+            container.appendChild(newGroup);
+        });
+
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('remove-sub-bidang')) {
+                e.target.parentElement.remove();
+            }
+        });
+    </script>
 </x-app-layout>

@@ -6,7 +6,7 @@
                 <hr>
             @endif
 
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Daftar Tim Penyusun RPJM Desa</h2>
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Daftar Tim Penyusun RPJM Desa Wanakarta</h2>
             <hr><br>
             <div class="mb-4">
                 <a href="{{ route('tim-penyusun.create') }}"
