@@ -12,9 +12,11 @@
             
             <h2 class="text-xl font-semibold text-gray-800 mb-4">Daftar RPJMDES</h2>
             <hr><br>
-            <div class="mb-4">
+            <div class="mb-4 flex space-x-4">
                 <a href="{{ route('rpjmdes.create') }}"
                     class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Tambah Data</a>
+                <a href="{{ route('rpjmdes.print') }}"
+                    class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">Print</a>
             </div>
             <div class="overflow-x-auto">
                 <table id="dataTable" class="display w-full">

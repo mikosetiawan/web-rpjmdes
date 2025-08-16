@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 
 namespace App\Http\Controllers;
@@ -59,5 +59,11 @@ class TimPenyusunController extends Controller
         $timPenyusun->delete();
 
         return redirect()->route('tim-penyusun.index')->with('success', 'Tim penyusun berhasil dihapus.');
+    }
+
+    public function print()
+    {
+        $timPenyusuns = TimPenyusun::all();
+        return view('tim-penyusun.print', compact('timPenyusuns'));
     }
 }

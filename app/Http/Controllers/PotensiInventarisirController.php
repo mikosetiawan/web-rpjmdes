@@ -62,4 +62,14 @@ class PotensiInventarisirController extends Controller
 
         return redirect()->route('potensi-inventarisir.index')->with('success', 'Potensi berhasil dihapus.');
     }
+
+
+    /**
+     * Print the inventory list
+     */
+    public function print()
+    {
+        $potensiInventarisirs = PotensiInventarisir::latest()->get();
+        return view('potensi-inventarisir.print', compact('potensiInventarisirs'));
+    }
 }

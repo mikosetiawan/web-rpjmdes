@@ -54,7 +54,7 @@
                    <a href="{{ route('potensi-inventarisir.index') }}"
                        class="sidebar-item {{ request()->routeIs('potensi-inventarisir.*') ? 'active-sidebar' : '' }} flex items-center space-x-3 px-4 py-3 text-white hover:text-yellow-300">
                        <i class="fas fa-book"></i>
-                       <span>Potensi Inventarisir</span>
+                       <span>Inventarisir</span>
                    </a>
                </li>
                

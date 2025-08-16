@@ -120,4 +120,11 @@ class RpjmdesController extends Controller
             return redirect()->back()->with('error', 'Gagal menghapus data RPJMDES.');
         }
     }
+
+    public function print()
+    {
+        $desa = "Wanakarta";
+        $rpjmdes = Rpjmdes::all();
+        return view('rpjmdes.print', compact('rpjmdes','desa'));
+    }
 }

@@ -34,6 +34,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('rpjmdes/{rpjmdes}/edit', [RpjmdesController::class, 'edit'])->name('rpjmdes.edit');
     Route::put('rpjmdes/{rpjmdes}', [RpjmdesController::class, 'update'])->name('rpjmdes.update');
     Route::delete('rpjmdes/{rpjmdes}', [RpjmdesController::class, 'destroy'])->name('rpjmdes.destroy');
+    Route::get('/rpjmdes/print', [RpjmdesController::class, 'print'])->name('rpjmdes.print');
 
 
     // Susunan Tim Penyusun RPJM Desa
@@ -43,6 +44,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/tim-penyusun/{id}/edit', [TimPenyusunController::class, 'edit'])->name('tim-penyusun.edit');
     Route::put('/tim-penyusun/{id}', [TimPenyusunController::class, 'update'])->name('tim-penyusun.update');
     Route::delete('/tim-penyusun/{id}', [TimPenyusunController::class, 'destroy'])->name('tim-penyusun.destroy');
+    Route::get('/tim-penyusun/print', [TimPenyusunController::class, 'print'])->name('tim-penyusun.print');
+
 
     // Potensi Inventarisir
     Route::get('/potensi-inventarisir', [PotensiInventarisirController::class, 'index'])->name('potensi-inventarisir.index');
@@ -51,6 +54,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/potensi-inventarisir/{id}/edit', [PotensiInventarisirController::class, 'edit'])->name('potensi-inventarisir.edit');
     Route::put('/potensi-inventarisir/{id}', [PotensiInventarisirController::class, 'update'])->name('potensi-inventarisir.update');
     Route::delete('/potensi-inventarisir/{id}', [PotensiInventarisirController::class, 'destroy'])->name('potensi-inventarisir.destroy');
+    Route::get('/print', [PotensiInventarisirController::class, 'print'])->name('potensi-inventarisir.print');
 
 
 });
