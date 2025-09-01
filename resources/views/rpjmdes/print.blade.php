@@ -363,10 +363,37 @@
                 <td>{{ $data->kerjasama_pihak_ketiga ? '✓' : '' }}</td>
             </tr>
         @endforeach
+        <tr>
+            <td class="total-row" colspan="21">SUB TOTAL BIDANG PENYELENGGARA PEMERINTAH DESA</td>
+            {{-- <td class="total-row"></td>
+            <td class="total-row"></td>
+            <td class="total-row"></td>
+            <td class="total-row"></td>
+            <td class="total-row"></td>
+            <td class="total-row"></td>
+            <td class="total-row"></td>
+            <td class="total-row"></td>
+            <td class="total-row"></td>
+            <td class="total-row"></td>
+            <td class="total-row"></td>
+            <td class="total-row"></td>
+            <td class="total-row"></td>
+            <td class="total-row"></td>
+            <td class="total-row"></td>
+            <td class="total-row"></td>
+            <td class="total-row"></td>
+            <td class="total-row"></td>
+            <td class="total-row"></td>
+            <td class="total-row"></td> --}}
+            <td class="total-row">
+                {{ number_format($rpjmdes->sum('jumlah'), 2) }}
+            </td>
+            <td colspan="3" class="total-row"></td>
+            {{-- <td></td>
+            <td></td> --}}
+        </tr>
     </table>
-
-    <div class="total-row" style="width: 100%;">SUB TOTAL BIDANG PENANGGULANGAN BENCANA, DARURAT DAN MENDESAK -</div>
-    <div class="total-row" style="width: 100%;">JUMLAH TOTAL KESELURUHAN -</div>
+    {{-- <div class="total-row" style="width: 100%;">SUB TOTAL BIDANG PENYELENGGARA PEMERINTAH DESA</div> --}}
 
     <div class="signature-section">
         <div class="signature-left">
